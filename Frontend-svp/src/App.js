@@ -1,20 +1,20 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import ProductList from './components/ProductList';
-import ProductDetail from './components/ProductDetail';
+import HomePage from './pages/HomePage';
+import ProductPage from './pages/ProductPage';
+import './App.css';
 
-function App() {
-  return (
-    <Router>
-      <div>
-        <h1>Product</h1>
-        <Routes>
-          <Route path="/" element={<ProductList />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
-        </Routes>
-      </div>
-    </Router>
-  );
-}
+const App = () => {
+    return (
+        <Router>
+            <div className="App">
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/product/:id" element={<ProductPage />} />
+                </Routes>
+            </div>
+        </Router>
+    );
+};
 
 export default App;

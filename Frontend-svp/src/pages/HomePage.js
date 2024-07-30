@@ -1,36 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import Product from '../components/Product';
 
 const HomePage = () => {
-  const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState([]);
 
-  useEffect(() => {
-    axios.get('/api/products/')
-      .then(response => {
-        setProducts(response.data);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the products!', error);
-      });
-  }, []);
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/api/products/');
+                setProducts(response.data);
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
+        };
 
-  return (
-    <div>
-      <h1>Products</h1>
-      <div className="product-list">
-        {products.map(product => (
-          <div key={product.id} className="product-item">
-            <img src={product.image} alt={product.name} />
-            <h2>{product.name}</h2>
-            <p>{product.description}</p>
-            <p>${product.price}</p>
-            <Link to={`/product/${product.id}`}>View Details</Link>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+        fetchProducts();
+    }, []);
+
+    return (
+        <div>
+            <h1>Products</h1>
+            <div className="product-list">
+                {products.length === 0 ? (
+                    <p>No products found.</p>
+                ) : (
+                    products.map(product => (
+                        <Product key={product.id} product={product} />
+                    ))
+                )}
+            </div>
+        </div>
+    );
 };
 
 export default HomePage;
